@@ -10,14 +10,14 @@ function(re.cma.sens,re.cma=NULL,delta=NULL,legend.pos="topright",xlab=expressio
   
   #################################################
   # plot delta = 0 result or not
-  if(is.null(re.cma)==FALSE)
+  if(!is.null(re.cma))
   {
     if(re.cma$delta==0)
     {
       plot.delta0<-FALSE
     }
   }
-  if(is.null(delta)==FALSE)
+  if(!is.null(delta))
   {
     if(length(which(delta==0))>0)
     {
@@ -30,7 +30,7 @@ function(re.cma.sens,re.cma=NULL,delta=NULL,legend.pos="topright",xlab=expressio
   polygon(c(rev(dt),dt),c(rev(AB.p.ub),AB.p.lb),col="grey80",border=NA)
   abline(v=0)
   abline(h=0)
-  if(plot.delta0==TRUE)
+  if(plot.delta0)
   {
     abline(h=AB.p[which(dt==0)],lty=2,col=2) 
   }
@@ -38,14 +38,14 @@ function(re.cma.sens,re.cma=NULL,delta=NULL,legend.pos="topright",xlab=expressio
   lines(dt,AB.p.lb,lty=2,col=8)
   lines(dt,AB.p.ub,lty=2,col=8)
   
-  if(is.null(re.cma)==FALSE)
+  if(!is.null(re.cma))
   {
     points(re.cma$delta,re.cma$Coefficients["ABp",1],pch=16,col=4,cex=0.75)
     lines(rep(re.cma$delta,2),re.cma$Coefficients["ABp",c(3,4)],lty=2,col=4)
     lines(c(re.cma$delta-0.02,re.cma$delta+0.02),rep(re.cma$Coefficients["ABp",3],2),col=4)
     lines(c(re.cma$delta-0.02,re.cma$delta+0.02),rep(re.cma$Coefficients["ABp",4],2),col=4)
     
-    if(plot.delta0==TRUE)
+    if(plot.delta0)
     {
       legend(legend.pos,legend=c(expression(delta==0),
                                  substitute(delta==d,list(d=round(re.cma$delta,digits=3)))),
@@ -56,7 +56,7 @@ function(re.cma.sens,re.cma=NULL,delta=NULL,legend.pos="topright",xlab=expressio
              lty=2,col=4,pch=16,pt.cex=lgd.pt.cex,bty="n",cex=lgd.cex)
     }
   }
-  if(is.null(delta)==FALSE)
+  if(!is.null(delta))
   {
     for(j in 1:length(delta))
     {
@@ -68,7 +68,7 @@ function(re.cma.sens,re.cma=NULL,delta=NULL,legend.pos="topright",xlab=expressio
       lines(c(dt[idx.tmp]-0.02,dt[idx.tmp]+0.02),rep(AB.p.ub[idx.tmp],2),col=4)
     }
     
-    if(plot.delta0==TRUE)
+    if(plot.delta0)
     {
       legend(legend.pos,legend=expression(delta==0),lty=2,col=2,bty="n",cex=lgd.cex) 
     }

@@ -13,7 +13,7 @@ function(dat,delta=0,A.i,B.i,C.i,b,Lambda,Sigma.update=FALSE)
     
     Y<-cbind(dd$M,dd$R)
     X<-cbind(dd$Z,dd$M)
-    if(Sigma.update==TRUE)
+    if(Sigma.update)
     {
       Theta<-matrix(c(A.i[i],0,C.i[i],B.i[i]),2,2)
       S<-t(Y-X%*%Theta)%*%(Y-X%*%Theta)

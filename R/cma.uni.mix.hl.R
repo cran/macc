@@ -61,7 +61,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
         b0<-c(Afix,Bfix,Cfix)
         cor.AB=cor.AC=cor.BC<-0
         LL<-as.numeric(logLik(fit.A,REML=FALSE)+logLik(fit.B,REML=FALSE)+logLik(fit.C,REML=FALSE))
-        if(is.matrix(var.constraint)==TRUE)
+        if(is.matrix(var.constraint))
         {
           if(nrow(var.constraint)==6)
           {
@@ -76,26 +76,32 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
             colnames(Lambda.confint)<-c("LB","UB")
             rownames(Lambda.confint)<-c("A","B","C")
             Phi.confint<-Lambda.confint
-            Phi.confint[1,]<-(intervals(fit.A)[[2]]$Sub[1,c(1,3)])^2
-            Phi.confint[2,]<-(intervals(fit.B)[[2]]$Sub[1,c(1,3)])^2
-            Phi.confint[3,]<-(intervals(fit.C)[[2]]$Sub[1,c(1,3)])^2
-            Lambda.confint[1,]<-(intervals(fit.A)[[3]][c(1,3)])^2
-            Lambda.confint[2,]<-(intervals(fit.B)[[3]][c(1,3)])^2
-            Lambda.confint[3,]<-(intervals(fit.C)[[3]][c(1,3)])^2 
+            intA<-intervals(fit.A)
+            intB<-intervals(fit.B)
+            intC<-intervals(fit.C)
+            Phi.confint[1,]<-as.matrix(intA[[2]]$Sub[1,c(1,3)])^2
+            Phi.confint[2,]<-as.matrix(intB[[2]]$Sub[1,c(1,3)])^2
+            Phi.confint[3,]<-as.matrix(intC[[2]]$Sub[1,c(1,3)])^2
+            Lambda.confint[1,]<-as.matrix(intA[[3]][c(1,3)])^2
+            Lambda.confint[2,]<-as.matrix(intB[[3]][c(1,3)])^2
+            Lambda.confint[3,]<-as.matrix(intC[[3]][c(1,3)])^2 
           }
         }else
-          if(var.constraint==TRUE)
+          if(var.constraint)
           {
             Lambda.confint<-matrix(NA,3,2)
             colnames(Lambda.confint)<-c("LB","UB")
             rownames(Lambda.confint)<-c("A","B","C")
             Phi.confint<-Lambda.confint
-            Phi.confint[1,]<-(intervals(fit.A)[[2]]$Sub[1,c(1,3)])^2
-            Phi.confint[2,]<-(intervals(fit.B)[[2]]$Sub[1,c(1,3)])^2
-            Phi.confint[3,]<-(intervals(fit.C)[[2]]$Sub[1,c(1,3)])^2
-            Lambda.confint[1,]<-(intervals(fit.A)[[3]][c(1,3)])^2
-            Lambda.confint[2,]<-(intervals(fit.B)[[3]][c(1,3)])^2
-            Lambda.confint[3,]<-(intervals(fit.C)[[3]][c(1,3)])^2 
+            intA<-intervals(fit.A)
+            intB<-intervals(fit.B)
+            intC<-intervals(fit.C)
+            Phi.confint[1,]<-as.matrix(intA[[2]]$Sub[1,c(1,3)])^2
+            Phi.confint[2,]<-as.matrix(intB[[2]]$Sub[1,c(1,3)])^2
+            Phi.confint[3,]<-as.matrix(intC[[2]]$Sub[1,c(1,3)])^2
+            Lambda.confint[1,]<-as.matrix(intA[[3]][c(1,3)])^2
+            Lambda.confint[2,]<-as.matrix(intB[[3]][c(1,3)])^2
+            Lambda.confint[3,]<-as.matrix(intC[[3]][c(1,3)])^2
           }
       }else
       {
@@ -124,7 +130,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
         b0<-c(Afix,Bfix,Cfix)
         cor.AB=cor.AC=cor.BC<-0
         LL<-as.numeric(logLik(fit.A,REML=FALSE)+logLik(fit.B,REML=FALSE)+logLik(fit.C,REML=FALSE))
-        if(is.matrix(var.constraint)==TRUE)
+        if(is.matrix(var.constraint))
         {
           if(nrow(var.constraint)==6)
           {
@@ -139,33 +145,39 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
             colnames(Lambda.confint)<-c("LB","UB")
             rownames(Lambda.confint)<-c("A","B","C")
             Phi.confint<-Lambda.confint
-            Phi.confint[1,]<-(confint(fit.A)[1,])^2
-            Phi.confint[2,]<-(confint(fit.B)[1,])^2
-            Phi.confint[3,]<-(confint(fit.C)[1,])^2
-            Lambda.confint[1,]<-(confint(fit.A)[2,])^2
-            Lambda.confint[2,]<-(confint(fit.B)[2,])^2
-            Lambda.confint[3,]<-(confint(fit.C)[2,])^2 
+            intA<-confint(fit.A)
+            intB<-confint(fit.B)
+            intC<-confint(fit.C)
+            Phi.confint[1,]<-as.matrix(intA[1,])^2
+            Phi.confint[2,]<-as.matrix(intB[1,])^2
+            Phi.confint[3,]<-as.matrix(intC[1,])^2
+            Lambda.confint[1,]<-as.matrix(intA[2,])^2
+            Lambda.confint[2,]<-as.matrix(intB[2,])^2
+            Lambda.confint[3,]<-as.matrix(intC[2,])^2 
           }
         }else
-          if(var.constraint==TRUE)
+          if(var.constraint)
           {
             Lambda.confint<-matrix(NA,3,2)
             colnames(Lambda.confint)<-c("LB","UB")
             rownames(Lambda.confint)<-c("A","B","C")
             Phi.confint<-Lambda.confint
-            Phi.confint[1,]<-(confint(fit.A)[1,])^2
-            Phi.confint[2,]<-(confint(fit.B)[1,])^2
-            Phi.confint[3,]<-(confint(fit.C)[1,])^2
-            Lambda.confint[1,]<-(confint(fit.A)[2,])^2
-            Lambda.confint[2,]<-(confint(fit.B)[2,])^2
-            Lambda.confint[3,]<-(confint(fit.C)[2,])^2 
+            intA<-confint(fit.A)
+            intB<-confint(fit.B)
+            intC<-confint(fit.C)
+            Phi.confint[1,]<-as.matrix(intA[1,])^2
+            Phi.confint[2,]<-as.matrix(intB[1,])^2
+            Phi.confint[3,]<-as.matrix(intC[1,])^2
+            Lambda.confint[1,]<-as.matrix(intA[2,])^2
+            Lambda.confint[2,]<-as.matrix(intB[2,])^2
+            Lambda.confint[3,]<-as.matrix(intC[2,])^2 
           }
       }
     }else
     {
       if(mix.pkg[1]=="nlme")
       {
-        if(is.matrix(var.constraint)==TRUE)
+        if(is.matrix(var.constraint))
         {
           if(nrow(var.constraint)==6)
           {
@@ -182,7 +194,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
             Phi.confint<-Lambda.confint
           }
         }else
-          if(var.constraint==TRUE)
+          if(var.constraint)
           {
             Lambda.confint<-matrix(NA,3,2)
             colnames(Lambda.confint)<-c("LB","UB")
@@ -203,25 +215,25 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
           warning("Equal-varaince assumption in random error is applied instead.")
           fit<-fit0
           Lambda<-diag(rep(summary(fit)$sigma^2,3))
-          if(is.matrix(var.constraint)==FALSE)
+          if(!is.matrix(var.constraint))
           {
-            if(var.constraint==TRUE)
+            if(var.constraint)
             {
               Lambda.confint[1,]=Lambda.confint[2,]=Lambda.confint[3,]<-(intervals(fit)[[3]][c(1,3)])^2 
             }
           }
         }else
         {
-          Lambda<-diag(c((summary(fit)$sigma*coef(fit$modelStruct$varStruct, unconstrained=FALSE, allCoef=TRUE)[1])^2,
-                         (summary(fit)$sigma*coef(fit$modelStruct$varStruct, unconstrained=FALSE, allCoef=TRUE)[3])^2,
-                         (summary(fit)$sigma*coef(fit$modelStruct$varStruct, unconstrained=FALSE, allCoef=TRUE)[2])^2))
+          lambda.tmp<-summary(fit)$sigma*coef(fit$modelStruct$varStruct, unconstrained=FALSE, allCoef=TRUE)
+          Lambda<-diag(c((lambda.tmp[1])^2,(lambda.tmp[3])^2,(lambda.tmp[2])^2))
           if(is.matrix(var.constraint)==FALSE)
           {
             if(var.constraint==TRUE)
             {
-              Lambda.confint[1,]<-(intervals(fit)[[4]][c(1,3)])^2
-              Lambda.confint[2,]<-(intervals(fit)[[3]][2,c(1,3)])^2*Lambda[1,1]
-              Lambda.confint[3,]<-(intervals(fit)[[3]][1,c(1,3)])^2*Lambda[1,1]
+              int.fit<-intervals(fit)
+              Lambda.confint[1,]<-(int.fit[[4]][c(1,3)])^2
+              Lambda.confint[2,]<-(int.fit[[3]][2,c(1,3)])^2*Lambda[1,1]
+              Lambda.confint[3,]<-(int.fit[[3]][1,c(1,3)])^2*Lambda[1,1]
             }
           }
         }
@@ -238,13 +250,14 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
         Phi[1,3]=Phi[3,1]<-cor.AC*sqrt(Phi[1,1]*Phi[3,3])
         Phi[2,3]=Phi[3,2]<-cor.BC*sqrt(Phi[2,2]*Phi[3,3])
         LL<-as.numeric(logLik(fit,REML=FALSE))
-        if(is.matrix(var.constraint)==FALSE)
+        if(!is.matrix(var.constraint))
         {
-          if(var.constraint==TRUE)
+          if(var.constraint)
           {
-            Phi.confint[1,]<-(intervals(fit)[[2]]$Sub.all[1,c(1,3)])^2
-            Phi.confint[2,]<-(intervals(fit)[[2]]$Sub.all[2,c(1,3)])^2
-            Phi.confint[3,]<-(intervals(fit)[[2]]$Sub.all[3,c(1,3)])^2 
+            int.fit<-intervals(fit)
+            Phi.confint[1,]<-as.matrix(int.fit[[2]]$Sub.all[1,c(1,3)])^2
+            Phi.confint[2,]<-as.matrix(int.fit[[2]]$Sub.all[2,c(1,3)])^2
+            Phi.confint[3,]<-as.matrix(int.fit[[2]]$Sub.all[3,c(1,3)])^2 
           } 
         }
       }else
@@ -278,7 +291,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
         Phi[2,3]=Phi[3,2]<-cor.BC*sqrt(Phi[2,2]*Phi[3,3])
         Lambda<-diag(rep(attr(VarCorr(fit),"sc")^2,3))
         LL<-as.numeric(logLik(fit,REML=FALSE))
-        if(is.matrix(var.constraint)==TRUE)
+        if(is.matrix(var.constraint))
         {
           if(nrow(var.constraint)==6)
           {
@@ -294,23 +307,23 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
             rownames(Lambda.confint)<-c("A","B","C")
             Phi.confint<-Lambda.confint
             re.confint<-confint(fit)
-            Phi.confint[1,]<-(re.confint[1,])^2
-            Phi.confint[2,]<-(re.confint[4,])^2
-            Phi.confint[3,]<-(re.confint[6,])^2
-            Lambda.confint[1,]=Lambda.confint[2,]=Lambda.confint[3,]<-(re.confint[7,])^2 
+            Phi.confint[1,]<-as.matrix(re.confint[1,])^2
+            Phi.confint[2,]<-as.matrix(re.confint[4,])^2
+            Phi.confint[3,]<-as.matrix(re.confint[6,])^2
+            Lambda.confint[1,]=Lambda.confint[2,]=Lambda.confint[3,]<-as.matrix(re.confint[7,])^2 
           }
         }else
-          if(var.constraint==TRUE)
+          if(var.constraint)
           {
             Lambda.confint<-matrix(NA,3,2)
             colnames(Lambda.confint)<-c("LB","UB")
             rownames(Lambda.confint)<-c("A","B","C")
             Phi.confint<-Lambda.confint
             re.confint<-confint(fit)
-            Phi.confint[1,]<-(re.confint[1,])^2
-            Phi.confint[2,]<-(re.confint[4,])^2
-            Phi.confint[3,]<-(re.confint[6,])^2
-            Lambda.confint[1,]=Lambda.confint[2,]=Lambda.confint[3,]<-(re.confint[7,])^2 
+            Phi.confint[1,]<-as.matrix(re.confint[1,])^2
+            Phi.confint[2,]<-as.matrix(re.confint[4,])^2
+            Phi.confint[3,]<-as.matrix(re.confint[6,])^2
+            Lambda.confint[1,]=Lambda.confint[2,]=Lambda.confint[3,]<-as.matrix(re.confint[7,])^2 
           }
       }
     }
@@ -332,7 +345,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
       u<-as.matrix(ranef(fit))
       Lambda<-diag(rep(summary(fit)$sigma^2,3))
       Phi<-diag(c(as.numeric(VarCorr(fit)[1,1]),as.numeric(VarCorr(fit)[2,1]),as.numeric(VarCorr(fit)[3,1])))
-      if(random.indep==TRUE)
+      if(random.indep)
       {
         cor.AB=cor.AC=cor.BC<-0
       }else
@@ -345,7 +358,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
       Phi[1,3]=Phi[3,1]<-cor.AC*sqrt(Phi[1,1]*Phi[3,3])
       Phi[2,3]=Phi[3,2]<-cor.BC*sqrt(Phi[2,2]*Phi[3,3])
       LL<-as.numeric(logLik(fit,REML=FALSE))
-      if(is.matrix(var.constraint)==TRUE)
+      if(is.matrix(var.constraint))
       {
         if(nrow(var.constraint)>=4)
         {
@@ -360,22 +373,24 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
           colnames(Lambda.confint)<-c("LB","UB")
           rownames(Lambda.confint)<-c("A","B","C")
           Phi.confint<-Lambda.confint
-          Phi.confint[1,]<-(intervals(fit)[[2]]$Sub.all[1,c(1,3)])^2
-          Phi.confint[2,]<-(intervals(fit)[[2]]$Sub.all[2,c(1,3)])^2
-          Phi.confint[3,]<-(intervals(fit)[[2]]$Sub.all[3,c(1,3)])^2
-          Lambda.confint[1,]=Lambda.confint[2,]=Lambda.confint[3,]<-(intervals(fit)[[3]][c(1,3)])^2
+          int.fit<-intervals(fit)
+          Phi.confint[1,]<-as.matrix(int.fit[[2]]$Sub.all[1,c(1,3)])^2
+          Phi.confint[2,]<-as.matrix(int.fit[[2]]$Sub.all[2,c(1,3)])^2
+          Phi.confint[3,]<-as.matrix(int.fit[[2]]$Sub.all[3,c(1,3)])^2
+          Lambda.confint[1,]=Lambda.confint[2,]=Lambda.confint[3,]<-as.matrix(int.fit[[3]][c(1,3)])^2
         }
       }else
-        if(var.constraint==TRUE)
+        if(var.constraint)
         {
           Lambda.confint<-matrix(NA,3,2)
           colnames(Lambda.confint)<-c("LB","UB")
           rownames(Lambda.confint)<-c("A","B","C")
           Phi.confint<-Lambda.confint
-          Phi.confint[1,]<-(intervals(fit)[[2]]$Sub.all[1,c(1,3)])^2
-          Phi.confint[2,]<-(intervals(fit)[[2]]$Sub.all[2,c(1,3)])^2
-          Phi.confint[3,]<-(intervals(fit)[[2]]$Sub.all[3,c(1,3)])^2
-          Lambda.confint[1,]=Lambda.confint[2,]=Lambda.confint[3,]<-(intervals(fit)[[3]][c(1,3)])^2
+          int.fit<-intervals(fit)
+          Phi.confint[1,]<-as.matrix(int.fit[[2]]$Sub.all[1,c(1,3)])^2
+          Phi.confint[2,]<-as.matrix(int.fit[[2]]$Sub.all[2,c(1,3)])^2
+          Phi.confint[3,]<-as.matrix(int.fit[[2]]$Sub.all[3,c(1,3)])^2
+          Lambda.confint[1,]=Lambda.confint[2,]=Lambda.confint[3,]<-as.matrix(intervals(fit)[[3]][c(1,3)])^2
         }
     }else
     {
@@ -393,7 +408,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
         }
       }else
       {
-        fit<-lmer(c(coet)~0+coe+(0+coe|Sub.all),control= lmerControl(optimizer=optimizer[1]))
+        fit<-lmer(c(coet)~0+coe+(0+coe|Sub.all),control=lmerControl(optimizer=optimizer[1]))
         u<-as.matrix(ranef(fit)$Sub.all)     
         cor.t<-1-c(attr(VarCorr(fit)[[1]],"correlation")-diag(diag(attr(VarCorr(fit)[[1]],"correlation"))))
         s<-0
@@ -422,7 +437,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
       Phi[2,3]=Phi[3,2]<-cor.BC*sqrt(Phi[2,2]*Phi[3,3])
       Lambda<-diag(rep(attr(VarCorr(fit),"sc")^2,3))
       LL<-as.numeric(logLik(fit,REML=FALSE))
-      if(is.matrix(var.constraint)==TRUE)
+      if(is.matrix(var.constraint))
       {
         if(nrow(var.constraint)>=4)
         {
@@ -463,7 +478,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
   s<-0
   while(s<max.itr&diff>=tol)
   {
-    if(random.indep==TRUE&random.var.equal==FALSE&u.int==TRUE)
+    if(random.indep&!random.var.equal&u.int)
     {
       V.alpha<-matrix(Phi[1,1],K,K)+diag(rep(Lambda[1,1],K))
       V.beta<-matrix(Phi[2,2],K,K)+diag(rep(Lambda[2,2],K))
@@ -515,7 +530,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
         Ct[i,]<-solve(diag(z2z)+solve(V.gamma))%*%(z2r.d+solve(V.gamma)%*%rep(b0[3],K))
       }
       # update sigma_1ik and sigma_2ik
-      if(Sigma.update==TRUE)
+      if(Sigma.update)
       {
         for(i in 1:N)
         {
@@ -541,7 +556,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
       Afix<-as.numeric(summary(fit.A)$coefficients$fixed[1])
       Bfix<-as.numeric(summary(fit.B)$coefficients$fixed[1])
       Cfix<-as.numeric(summary(fit.C)$coefficients$fixed[1])
-      if(random.var.update==TRUE)
+      if(random.var.update)
       {
         Phi<-diag(c(as.numeric(VarCorr(fit.A)[1,1]),as.numeric(VarCorr(fit.B)[1,1]),as.numeric(VarCorr(fit.C)[1,1])))
         Lambda<-diag(c(as.numeric(VarCorr(fit.A)[2,1]),as.numeric(VarCorr(fit.B)[2,1]),as.numeric(VarCorr(fit.C)[2,1])))
@@ -609,7 +624,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
       s<-s+1      
     }else
     {
-      if((random.var.equal==TRUE&u.int==TRUE)|(random.indep==FALSE&u.int==TRUE))
+      if((random.var.equal&u.int)|(!random.indep&u.int))
       {
         warning("The u.int=TRUE argument will be ignored and the full h-likelihood method will be applied.")
       }
@@ -677,7 +692,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
           Lambda<-diag(rep(theta2,3))
         }
         Phi<-t(u)%*%u/N
-        if(random.indep==TRUE)
+        if(random.indep)
         {
           Phi<-diag(as.vector(diag(Phi)))
         }
@@ -741,7 +756,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
         } 
       }
       # update sigma_1ik and sigma_2ik
-      if(Sigma.update==TRUE)
+      if(Sigma.update)
       {
         for(i in 1:N)
         {
@@ -804,7 +819,7 @@ function(dat,delta,tol=1e-4,max.itr=50,alpha=0.05,random.indep=TRUE,optimizer=c(
   var.comp<-data.frame(delta=delta,A=Phi[1,1],C=Phi[3,3],B=Phi[2,2],Lambda[1,1],Lambda[3,3],Lambda[2,2])
   colnames(var.comp)<-c("delta","Random(A)","Random(C)","Random(B)","Var(Error A)","Var(Error C)","Var(Error B)")
   
-  if(random.indep==TRUE)
+  if(random.indep)
   {
     Phi<-diag(as.vector(diag(Phi)))
   }

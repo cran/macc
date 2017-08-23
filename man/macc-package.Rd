@@ -11,15 +11,15 @@ macc performs causal mediation analysis under confounding or correlated errors. 
 \tabular{ll}{
 Package: \tab macc \cr
 Type: \tab Package \cr
-Version: \tab 1.0.0 \cr
-Date: \tab 2016-11-03 \cr
+Version: \tab 1.0.1 \cr
+Date: \tab 2017-08-20 \cr
 License: \tab GPL (>=2) \cr
 }
 }
 \author{
-	Yi Zhao <yi_zhao@brown.edu> and Xi Luo <xi.rossi.luo@gmail.com> \cr
+	Yi Zhao <yi_zhao@alumni.brown.edu> and Xi Luo <xi.rossi.luo@gmail.com> \cr
 
-Maintainer: Yi Zhao <yi_zhao@brown.edu>
+Maintainer: Yi Zhao <yi_zhao@alumni.brown.edu>
 }
 \references{Zhao, Y., & Luo, X. (2014). \emph{Estimating Mediation Effects under Correlated Errors with an Application to fMRI.} arXiv preprint arXiv:1410.7217.
 }

@@ -46,7 +46,7 @@ function(dat,Sigma.update=FALSE)
     
     Y<-cbind(dd$M,dd$R)
     X<-cbind(dd$Z,dd$M)
-    if(Sigma.update==TRUE)
+    if(Sigma.update)
     {
       Theta<-matrix(c(A.hat[i],0,Ct[i],Bt[i]),2,2)
       S<-t(Y-X%*%Theta)%*%(Y-X%*%Theta)

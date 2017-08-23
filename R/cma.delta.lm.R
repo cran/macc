@@ -30,7 +30,7 @@ function(dat,delta=0,max.itr=500,tol=1e-4,error.indep=FALSE,error.var.equal=FALS
   fit.B<-gls(Bt~1)
   fit.C<-gls(Ct~1)
   
-  if(is.matrix(var.constraint)==TRUE)
+  if(is.matrix(var.constraint))
   {
     if(nrow(var.constraint)==3)
     {
@@ -43,19 +43,25 @@ function(dat,delta=0,max.itr=500,tol=1e-4,error.indep=FALSE,error.var.equal=FALS
       Lambda.confint<-matrix(NA,3,2)
       colnames(Lambda.confint)<-c("LB","UB")
       rownames(Lambda.confint)<-c("A","B","C")
-      Lambda.confint[1,]<-(intervals(fit.A)[[2]][c(1,3)])^2
-      Lambda.confint[2,]<-(intervals(fit.B)[[2]][c(1,3)])^2
-      Lambda.confint[3,]<-(intervals(fit.C)[[2]][c(1,3)])^2 
+      intA<-intervals(fit.A)
+      intB<-intervals(fit.B)
+      intC<-intervals(fit.C)
+      Lambda.confint[1,]<-as.matrix(intA[[2]][c(1,3)])^2
+      Lambda.confint[2,]<-as.matrix(intB[[2]][c(1,3)])^2
+      Lambda.confint[3,]<-as.matrix(intC[[2]][c(1,3)])^2 
     }
   }else
-    if(var.constraint==TRUE)
+    if(var.constraint)
     {
       Lambda.confint<-matrix(NA,3,2)
       colnames(Lambda.confint)<-c("LB","UB")
       rownames(Lambda.confint)<-c("A","B","C")
-      Lambda.confint[1,]<-(intervals(fit.A)[[2]][c(1,3)])^2
-      Lambda.confint[2,]<-(intervals(fit.B)[[2]][c(1,3)])^2
-      Lambda.confint[3,]<-(intervals(fit.C)[[2]][c(1,3)])^2 
+      intA<-intervals(fit.A)
+      intB<-intervals(fit.B)
+      intC<-intervals(fit.C)
+      Lambda.confint[1,]<-as.matrix(intA[[2]][c(1,3)])^2
+      Lambda.confint[2,]<-as.matrix(intB[[2]][c(1,3)])^2
+      Lambda.confint[3,]<-as.matrix(intC[[2]][c(1,3)])^2 
     }else
     {
       Lambda.confint<-NULL
@@ -65,9 +71,9 @@ function(dat,delta=0,max.itr=500,tol=1e-4,error.indep=FALSE,error.var.equal=FALS
   ######################################
   # Covariance estimate
   Lambda.hat<-matrix(0,3,3)
-  if(error.var.equal==FALSE)
+  if(!error.var.equal)
   {
-    if(error.indep==TRUE)
+    if(error.indep)
     {
       fit.A<-lm(At~1)
       fit.B<-lm(Bt~1)
@@ -90,7 +96,7 @@ function(dat,delta=0,max.itr=500,tol=1e-4,error.indep=FALSE,error.var.equal=FALS
     }
   }else
   {
-    if(error.indep==TRUE)
+    if(error.indep)
     {
       bt<-rbind(At,Bt,Ct)
       group<-c(rep("A",length(At)),rep("B",length(Bt)),rep("C",length(Ct)))
@@ -123,7 +129,7 @@ function(dat,delta=0,max.itr=500,tol=1e-4,error.indep=FALSE,error.var.equal=FALS
       Y<-cbind(dd$M,dd$R)
       X<-cbind(dd$Z,dd$M)
       
-      if(Sigma.update==TRUE)
+      if(Sigma.update)
       {
         Theta<-matrix(c(At[i],0,Ct[i],Bt[i]),2,2)
         S<-t(Y-X%*%Theta)%*%(Y-X%*%Theta)
@@ -142,9 +148,9 @@ function(dat,delta=0,max.itr=500,tol=1e-4,error.indep=FALSE,error.var.equal=FALS
     b.new<-apply(bi.new,2,mean)
     Lambda.new<-matrix(0,3,3)
     Lambda.tmp<-t(bi.new-matrix(rep(b.new,N),ncol=3,byrow=TRUE))%*%(bi.new-matrix(rep(b.new,N),ncol=3,byrow=TRUE))/N
-    if(error.var.equal==FALSE)
+    if(!error.var.equal)
     {
-      if(error.indep==TRUE)
+      if(error.indep)
       {
         diag(Lambda.new)<-diag(Lambda.tmp)
       }else
@@ -185,7 +191,7 @@ function(dat,delta=0,max.itr=500,tol=1e-4,error.indep=FALSE,error.var.equal=FALS
       }
     }else
     {
-      if(error.indep==TRUE)
+      if(error.indep)
       {
         lambda2<-t(c(bi.new-matrix(rep(b.new,N),ncol=3,byrow=TRUE)))%*%c(bi.new-matrix(rep(b.new,N),ncol=3,byrow=TRUE))/(3*N)
         diag(Lambda.new)<-rep(lambda2,3)

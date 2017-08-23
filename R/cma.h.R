@@ -12,7 +12,7 @@ function(dat,delta=0,A.ik,B.ik,C.ik,b,u,Phi,Lambda,random.indep=TRUE,u.int=FALSE
     {
       dd<-dat[[i]][[j]]
       n[i,j]<-nrow(dd)
-      if(Sigma.update==TRUE)
+      if(Sigma.update)
       {
         Y<-cbind(dd$M,dd$R)
         X<-cbind(dd$Z,dd$M)
@@ -45,7 +45,7 @@ function(dat,delta=0,A.ik,B.ik,C.ik,b,u,Phi,Lambda,random.indep=TRUE,u.int=FALSE
   const2<--log(2*pi)*N*K*3/2
   const3<--log(2*pi)*N*3/2
   
-  if(random.indep==TRUE&u.int==TRUE)
+  if(random.indep&u.int)
   {
     l.A=l.B=l.C<-0
     V.A<-diag(rep(Lambda[1,1],K,K))+Phi[1,1]*matrix(1,K,K)
@@ -62,7 +62,7 @@ function(dat,delta=0,A.ik,B.ik,C.ik,b,u,Phi,Lambda,random.indep=TRUE,u.int=FALSE
     re<-data.frame(h1=(const1+h11+h12+h13+h14),h2=const2+h2,h=const1+const2+h)
   }else
   {
-    if(random.indep==FALSE&u.int==TRUE)
+    if(!random.indep&u.int)
     {
       warning("Independence in random effects assumption is enforced when calculating the likelihood.")
     }

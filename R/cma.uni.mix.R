@@ -60,9 +60,9 @@ function(dat,delta=0,conf.level=0.95,optimizer=c("bobyqa","Nelder_Mead","optimx"
   }
   coet<-c(c(At),c(Ct),c(Bt))  
   
-  if(random.var.equal==FALSE)
+  if(!random.var.equal)
   {
-    if(random.indep==TRUE)
+    if(random.indep)
     {
       vec.At<-c(At)
       vec.Bt<-c(Bt)
@@ -131,7 +131,7 @@ function(dat,delta=0,conf.level=0.95,optimizer=c("bobyqa","Nelder_Mead","optimx"
         }
         fit<-NULL
         try(fit<-update(fit0,weights=varIdent(form=~1|factor(coe))))
-        if(is.null(fit)==TRUE)
+        if(is.null(fit))
         {
           warning("Equal-varaince assumption in random error is applied instead.")
           fit<-fit0
@@ -206,7 +206,7 @@ function(dat,delta=0,conf.level=0.95,optimizer=c("bobyqa","Nelder_Mead","optimx"
       u<-as.matrix(ranef(fit))
       Lambda<-diag(rep(summary(fit)$sigma^2,3))
       Phi<-diag(c(as.numeric(VarCorr(fit)[1,1]),as.numeric(VarCorr(fit)[2,1]),as.numeric(VarCorr(fit)[3,1])))
-      if(random.indep==TRUE)
+      if(random.indep)
       {
         cor.AB=cor.AC=cor.BC<-0
       }else
@@ -250,7 +250,7 @@ function(dat,delta=0,conf.level=0.95,optimizer=c("bobyqa","Nelder_Mead","optimx"
       Phi<-diag(c(as.numeric((attr(VarCorr(fit)[[1]],"stddev")^2)[1]),
                   as.numeric((attr(VarCorr(fit)[[1]],"stddev")^2)[2]),
                   as.numeric((attr(VarCorr(fit)[[1]],"stddev")^2)[3])))
-      if(random.indep==TRUE)
+      if(random.indep)
       {
         cor.AB=cor.AC=cor.BC<-0
       }else

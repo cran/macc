@@ -8,12 +8,12 @@ function(dat,model.type=c("single","multilevel"),method=c("HL","TS","HL-TS"),del
 {
   if(model.type[1]=="single")
   {
-    if(is.null(delta)==TRUE)
+    if(is.null(delta))
     {
       delta<-0
     }
     re<-cma.uni.delta(dat,delta=delta,conf.level=conf.level)
-    if(sens.plot==TRUE)
+    if(sens.plot)
     {
       re.sens<-cma.uni.sens(dat,conf.level=conf.level)
       cma.uni.plot(re.sens,re,delta=NULL,legend.pos=legend.pos,xlab=xlab,ylab=ylab,
@@ -22,7 +22,7 @@ function(dat,model.type=c("single","multilevel"),method=c("HL","TS","HL-TS"),del
   }else
     if(model.type[1]=="multilevel")
     {
-      if(is.null(delta)==TRUE)
+      if(is.null(delta))
       {
         if(method[1]=="TS")
         {
